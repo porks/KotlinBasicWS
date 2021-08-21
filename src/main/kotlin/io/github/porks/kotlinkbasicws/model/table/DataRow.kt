@@ -7,4 +7,5 @@ class DataRow (
     // These are the values in the row. A collection of pairs (Column Name, Value to show)
     @JsonProperty("row")
     val values: HashMap<String, String>
-    )
+    ) {
+}
