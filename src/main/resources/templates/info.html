@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Information Page</title>
+</head>
+
+<body>
+    <table>
+        <tr>
+            <td>Name</td>
+            <td>Age</td>
+        </tr>
+        <tr>
+            <td>
+                <span th:text="${mainName}" />
+            </td>
+            <td>
+                <span th:text="${mainAge}" />
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
