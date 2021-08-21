@@ -1,22 +1,38 @@
 package io.github.porks.kotlinkbasicws.controller.restapi
 
-import io.github.porks.kotlinkbasicws.model.table.DataRow
 import io.github.porks.kotlinkbasicws.model.table.DataTable
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 @RestController
 class DataController {
-    @GetMapping("/data/query", produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun query(): String {
-        val table = DataTable()
-        fakeData(table)
+    private val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
 
-        return table.toJson()
+    private val _table = DataTable()
+
+    init {
+        preloadData(_table)
     }
 
-    fun fakeData(table: DataTable) {
+    @GetMapping("/data/query", produces = [MediaType.APPLICATION_JSON_VALUE])
+    fun query(): String {
+        createAccessTimeRow(_table)
+        return _table.toJson()
+    }
+
+    fun createAccessTimeRow(table: DataTable) {
+        val accessTime = LocalDateTime.now()
+        val accessTimeFormatted = accessTime.format(dateFormatter)
+
+
+        val accessTimeRow = hashMapOf("AccessTime" to accessTimeFormatted)
+        table.addRow(accessTimeRow)
+    }
+
+    private fun preloadData(table: DataTable) {
 
         val firstRow = hashMapOf("Greeting" to "Hello!", "Language" to "English")
         table.addRow(firstRow)

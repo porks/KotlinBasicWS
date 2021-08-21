@@ -1,13 +1,18 @@
 package io.github.porks.kotlinkbasicws.model.table
 
+import com.fasterxml.jackson.annotation.JsonAlias
+import com.fasterxml.jackson.annotation.JsonAutoDetect
+import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.annotation.PropertyAccessor
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 
 class DataTable {
     // Table columns - The columns are optional for the rows. A row can have just some columns (or all columns)
+    @JsonProperty("allColumns")
     private val columnModel = DataColumnModel()
 
     // Table rows
-    val rows = ArrayList<DataRow>()
+    private val rows = ArrayList<DataRow>()
 
     fun addRow(values: HashMap<String, String>) {
         // Add columns to table
@@ -20,6 +25,7 @@ class DataTable {
     // Transform the object in a JSON String
     fun toJson(): String {
         val json = jacksonObjectMapper()
-        return json.writeValueAsString(rows)
+        json.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY)
+        return json.writeValueAsString(this)
     }
 }
