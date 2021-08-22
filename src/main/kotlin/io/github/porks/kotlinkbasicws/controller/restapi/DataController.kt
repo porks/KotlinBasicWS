@@ -3,11 +3,13 @@ package io.github.porks.kotlinkbasicws.controller.restapi
 import io.github.porks.kotlinkbasicws.model.table.DataTable
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
+@RequestMapping("/data")
 @RestController
 class DataController {
     private val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
@@ -19,14 +21,14 @@ class DataController {
     }
 
     // Print the JSON without any filter or formatting
-    @GetMapping("/data/raw", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @GetMapping("/raw", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun raw(): String {
         createAccessTimeRow(_table)
         return _table.toJson()
     }
 
     // Filter the data and print the JSON
-    @GetMapping("/data/query", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @GetMapping("/query", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun query(
         @RequestParam queryParameters: Map<String, String>
     ): String {

@@ -6,10 +6,10 @@ import org.springframework.web.bind.annotation.GetMapping
 
 @Controller
 class Info {
-    @GetMapping("/info")
+    @GetMapping("/")
     fun info(model: Model): String {
         model.addAttribute("mainName", "Marcelo Rossi")
         model.addAttribute("mainAge", 37)
-        return "info"
+        return "index"
     }
 }
