@@ -10,90 +10,94 @@
 </head>
 
 <body>
-    <div class="container-fluid">
-        <div class="row" style="padding-bottom: 10px">
-            <div class="col-md">
-                <h2>Table Information from Controller</h2>
+    <div class="container-md">
+        <div class="shadow p-3 mb-4 bg-body rounded">
+            <div class="row" style="padding-bottom: 10px">
+                <div class="col-md">
+                    <h2>Table Information from Controller</h2>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <td th:each="col: ${tableView.columns}">
+                                    <span th:text="${col}" />
+                                </td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="row: ${tableView.rows}">
+                                <td th:each="value: ${row}">
+                                    <span th:text="${value}" />
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
 
-        <div class="row" style="padding-bottom: 30px">
-            <div class="col-md">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <td th:each="col: ${tableView.columns}">
-                                <span th:text="${col}" />
-                            </td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr th:each="row: ${tableView.rows}">
-                            <td th:each="value: ${row}">
-                                <span th:text="${value}" />
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+        <div class="shadow p-3 mb-4 bg-body rounded">
+            <div class="row">
+                <div class="col-md">
+                    <h3>You can access this data using our WebService</h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md">
+                    <span>All raw data is available <a href="/data/raw">here</a>. The Endpoint is /data/raw</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md">
+                    <span>Or you can filter the data using the Endpoint /data/query?param=list,of,value</span>
+                </div>
+            </div>
+
+            <br/>
+
+            <div class="row">
+                <div class="col-md">
+                    <span>Click <a href="/data/query?size=big,huge,middle&color=red,blue">here</a> to see the data bellow in JSON format</span>
+                    <span>This filter was used: /data/query?size=big,huge,middle&color=red,blue</span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <td th:each="col: ${tableView.columns}">
+                                    <span th:text="${col}" />
+                                </td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="row: ${tableView.query('size=big,huge,middle&color=red,blue').rows}">
+                                <td th:each="value: ${row}">
+                                    <span th:text="${value}" />
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-md">
-                <h3>You can access this data using our WebService</h3>
+        <div class="shadow p-3 mb-4 bg-body rounded">
+            <div class="row">
+                <div class="col-md">
+                    <h3>Access Log Information</h3>
+                </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-md">
-                <span>All raw data is available <a href="/data/raw">here</a>. The Endpoint is /data/raw</span>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md">
-                <span>Or you can filter the data using the Endpoint /data/query?param=list,of,value</span>
-            </div>
-        </div>
-
-        <br/>
-
-        <div class="row">
-            <div class="col-md">
-                <span>Click <a href="/data/query?size=big,huge,middle&color=red,blue">here</a> to see the data bellow in JSON format</span>
-                <span>This filter was used: /data/query?size=big,huge,middle&color=red,blue</span>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <td th:each="col: ${tableView.columns}">
-                                <span th:text="${col}" />
-                            </td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr th:each="row: ${tableView.query('size=big,huge,middle&color=red,blue').rows}">
-                            <td th:each="value: ${row}">
-                                <span th:text="${value}" />
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <br/>
-
-        <div class="row">
-            <div class="col-md">
-                <h3>Access Log Information</h3>
-            </div>
-        </div>
-        <div class="row" th:each="info: ${accessInfo}">
-            <div class="col-md">
-                <span th:text="${info}" />
+            <div class="row" th:each="info: ${accessInfo}">
+                <div class="col-md">
+                    <span th:text="${info}" />
+                </div>
             </div>
         </div>
     </div>
