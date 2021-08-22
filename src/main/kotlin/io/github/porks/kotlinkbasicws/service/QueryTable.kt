@@ -19,6 +19,10 @@ class QueryTable {
         val normalizedQueryParams = normalizeQuery(queryParameters)
 
         val tableFiltered = DataTable()
+
+        // Has all the original table columns (in the same sequence)
+        tableFiltered.columnModel.columns.addAll(table.columnModel.columns)
+
         table.rows.filter { row ->
             // Must match all params
             normalizedQueryParams.all { param ->
