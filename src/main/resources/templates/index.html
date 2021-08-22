@@ -9,23 +9,17 @@
 
 <body>
     <table>
-        <!-- tr th:each="student: ${students}">
-            <td th:text="${student.id}" />
-            <td th:text="${student.name}" />
-        </tr -->
+        <tr>
+            <td th:each="col: ${table.columnModel.columns}">
+                <span th:text="${col}" />
+            </td>
+        </tr>
+        <tr th:each="row: ${table.rows}">
+            <td th:each="cell: ${row.values}">
+                <span th:text="${cell.value}" />
+            </td>
+        </tr>
 
-        <tr>
-            <td>Name</td>
-            <td>Age</td>
-        </tr>
-        <tr>
-            <td>
-                <span th:text="${mainName}">aa</span>
-            </td>
-            <td>
-                <span th:text="${mainAge}" />
-            </td>
-        </tr>
     </table>
 </body>
 </html>

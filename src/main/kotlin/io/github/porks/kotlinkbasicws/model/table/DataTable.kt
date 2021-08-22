@@ -9,7 +9,7 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 class DataTable {
     // Table columns - The columns are optional for the rows. A row can have just some columns (or all columns)
     @JsonProperty("allColumns")
-    private val columnModel = DataColumnModel()
+    val columnModel = DataColumnModel()
 
     // Table rows
     val rows = ArrayList<DataRow>()
