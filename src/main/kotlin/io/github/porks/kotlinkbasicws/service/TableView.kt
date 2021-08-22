@@ -3,7 +3,11 @@ package io.github.porks.kotlinkbasicws.service
 import io.github.porks.kotlinkbasicws.model.table.DataTable
 import org.springframework.beans.factory.annotation.Autowired
 
-// A read-only view for DataService to be used on the presentation application layer
+/**
+ * A read-only view for DataService to be used on the presentation application layer
+ *
+ * @author Marcelo Rossi
+ */
 class TableView(private val table: DataTable) {
     private val queryTable = QueryTable()
 
@@ -23,17 +27,8 @@ class TableView(private val table: DataTable) {
     }
 
     // Filters the main Table and returns a new TableView/DataService with the resulting rows
-    fun query(str: String): TableView {
-        val queryParams = HashMap<String, String>()
-        for (tuple in str.split("&")) {
-            val listTuple = tuple.split("=")
-            if (listTuple.size != 2)
-                continue
-
-            queryParams[listTuple[0]] = listTuple[1]
-        }
-
-        val filteredTable = queryTable.query(table, queryParams)
+    fun query(queryString: String): TableView {
+        val filteredTable = queryTable.query(table, queryString)
         return TableView(filteredTable)
     }
 }

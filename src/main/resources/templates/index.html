@@ -12,7 +12,7 @@
 <body>
     <div class="container-md">
         <div class="shadow p-3 mb-4 bg-body rounded">
-            <div class="row" style="padding-bottom: 10px">
+            <div class="row alert alert-info">
                 <div class="col-md">
                     <h2>Table Information from Controller</h2>
                 </div>
@@ -20,7 +20,7 @@
 
             <div class="row">
                 <div class="col-md">
-                    <table class="table">
+                    <table class="table table-light table-hover">
                         <thead>
                             <tr>
                                 <td th:each="col: ${tableView.columns}">
@@ -41,34 +41,53 @@
         </div>
 
         <div class="shadow p-3 mb-4 bg-body rounded">
-            <div class="row">
+            <div class="row alert alert-info">
                 <div class="col-md">
                     <h3>You can access this data using our WebService</h3>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md">
-                    <span>All raw data is available <a href="/data/raw">here</a>. The Endpoint is /data/raw</span>
+            <div class="row alert alert-light">
+                <div class="row">
+                    <div class="col-md">
+                        <span>All raw data is available </span>
+                        <span class="badge rounded-pill bg-light text-dark"><a href="/data/raw">here</a></span>
+                        <span>. The Endpoint is</span>
+                        <span class="badge bg-success">/data/raw</span>
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-md">
-                    <span>Or you can filter the data using the Endpoint /data/query?param=list,of,value</span>
-                </div>
-            </div>
-
-            <br/>
-
-            <div class="row">
-                <div class="col-md">
-                    <span>Click <a href="/data/query?size=big,huge,middle&color=red,blue">here</a> to see the data bellow in JSON format</span>
-                    <span>This filter was used: /data/query?size=big,huge,middle&color=red,blue</span>
+                <div class="row">
+                    <div class="col-md">
+                        <span>Or you can filter the data using the Endpoint </span>
+                        <span class="badge bg-success">/data/query?param=list,of,value</span>
+                    </div>
                 </div>
             </div>
 
+            <div class="row alert alert-info" role="alert">
+                <div class="col-md">
+                    Click
+                    <span class="badge rounded-pill bg-light text-dark">
+                        <a th:href="'/data/query?' + ${infoQuery.query}">here</a>
+                    </span>
+                     to see the table bellow in JSON format
+                </div>
+            </div>
+
+            <form th:action="@{/infoQueryExecute}" th:object="${infoQuery}" method="post">
+                <div class="row">
+                    <div class="col-md">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Query String</span>
+                            <input type="text" th:field="*{query}"  class="form-control" placeholder="the query string" aria-label="Recipient's username" aria-describedby="button-addon2">
+                            <button class="btn btn-primary" type="submit" id="button-addon2">execute</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
             <div class="row">
                 <div class="col-md">
-                    <table class="table">
+                    <table class="table table-light table-hover">
                         <thead>
                             <tr>
                                 <td th:each="col: ${tableView.columns}">
@@ -77,7 +96,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr th:each="row: ${tableView.query('size=big,huge,middle&color=red,blue').rows}">
+                            <tr th:each="row: ${tableView.query(infoQuery.query).rows}">
                                 <td th:each="value: ${row}">
                                     <span th:text="${value}" />
                                 </td>
@@ -89,7 +108,7 @@
         </div>
 
         <div class="shadow p-3 mb-4 bg-body rounded">
-            <div class="row">
+            <div class="row alert alert-info">
                 <div class="col-md">
                     <h3>Access Log Information</h3>
                 </div>

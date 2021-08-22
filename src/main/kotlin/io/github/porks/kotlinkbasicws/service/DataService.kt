@@ -5,6 +5,12 @@ import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
+/**
+ * A Service shared by the Controllers (RESTful: DataControler & WebView: InfoController)
+ * Used to hold and manipulate the main table
+ *
+ * @author Marcelo Rossi
+ */
 @Service
 class DataService {
     private val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")

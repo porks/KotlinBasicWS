@@ -9,6 +9,11 @@ import org.springframework.web.bind.annotation.*
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
+/**
+ * RESTful API used to manipulate the table
+ *
+ * @author Marcelo Rossi
+ */
 @RequestMapping("/data")
 @RestController
 class DataController {
