@@ -12,7 +12,7 @@ class DataService {
     // Main table with all data
     final val table = DataTable()
 
-    // Table with the access date and time
+    // Information about access date and time
     final val accessTable = ArrayList<String>()
 
     init {
@@ -24,36 +24,6 @@ class DataService {
         val accessTime = LocalDateTime.now()
         val accessTimeFormatted = accessTime.format(dateFormatter)
         accessTable.add(accessTimeFormatted)
-    }
-
-    fun query(queryParameters: Map<String, String>): DataTable {
-        val normalizedQueryParams = normalizeQuery(queryParameters)
-
-        val tableFiltered = DataTable()
-        table.rows.filter { row ->
-            // Must match all params
-            normalizedQueryParams.all { param ->
-                // Match just one param's value is enough
-                param.value.any { paramValue ->
-                    row.values[param.key]?.toUpperCase() == paramValue
-                }
-            }
-        }.forEach {
-            tableFiltered.addRow(it.values)
-        }
-
-        return tableFiltered
-    }
-
-    // Handle the queryParameters to make easy the filter
-    fun normalizeQuery(queryParameters: Map<String, String> ): Map<String, Set<String>> {
-        val normalized = HashMap<String, Set<String>>()
-        queryParameters.forEach {
-            val valuesExpanded = it.value.toUpperCase().split(",").toSet()
-            normalized[it.key] = valuesExpanded
-        }
-
-        return normalized
     }
 
     private fun preloadData(table: DataTable) {

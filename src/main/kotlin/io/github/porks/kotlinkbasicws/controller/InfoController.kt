@@ -17,7 +17,8 @@ class InfoController {
     fun info(model: Model): String {
         dataService.createAccessTimeRow()
 
-        model.addAttribute("tableView", TableView(dataService))
+        model.addAttribute("tableView", TableView(dataService.table))
+        model.addAttribute("accessInfo", dataService.accessTable)
         return "index"
     }
 }

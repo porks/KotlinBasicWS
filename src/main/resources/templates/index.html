@@ -8,7 +8,13 @@
 </head>
 
 <body>
+    <h2>Table Information from Controller</h2>
     <table>
+        <tr>
+            <td th:each="col: ${tableView.columns}">
+                <input />
+            </td>
+        </tr>
         <tr>
             <td th:each="col: ${tableView.columns}">
                 <span th:text="${col}" />
@@ -21,8 +27,40 @@
         </tr>
     </table>
 
+    <br/>
+    <br/>
+    <br/>
+
+    <h3>You can access this data using our WebService</h3>
+    <div>
+        <span>All raw data is available <a href="/data/raw">here</a>. The Endpoint is /data/raw</span>
+    </div>
+    <br/>
+    <div>
+        <span>Or you can filter the data using the Endpoint /data/query?param=list,of,value</span>
+        <br/>
+        <span>Click <a href="/data/query?size=big,huge,middle&color=red,blue">here</a> to see the data bellow in JSON format</span>
+        <span>This filter was used: /data/query?size=big,huge,middle&color=red,blue</span>
+        <table>
+            <tr>
+                <td th:each="col: ${tableView.columns}">
+                    <span th:text="${col}" />
+                </td>
+            </tr>
+            <tr th:each="row: ${tableView.query('size=big,huge,middle&color=red,blue').rows}">
+                <td th:each="value: ${row}">
+                    <span th:text="${value}" />
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <br/>
+    <br/>
+    <br/>
+
     <h3>Access Log Information</h3>
-    <div th:each="info: ${tableView.accessInfo}">
+    <div th:each="info: ${accessInfo}">
         <span th:text="${info}" />
     </div>
 </body>
