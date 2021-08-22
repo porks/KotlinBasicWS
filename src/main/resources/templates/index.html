@@ -10,16 +10,20 @@
 <body>
     <table>
         <tr>
-            <td th:each="col: ${table.columnModel.columns}">
+            <td th:each="col: ${tableView.columns}">
                 <span th:text="${col}" />
             </td>
         </tr>
-        <tr th:each="row: ${table.rows}">
-            <td th:each="cell: ${row.values}">
-                <span th:text="${cell.value}" />
+        <tr th:each="row: ${tableView.rows}">
+            <td th:each="value: ${row}">
+                <span th:text="${value}" />
             </td>
         </tr>
-
     </table>
+
+    <h3>Access Log Information</h3>
+    <div th:each="info: ${tableView.accessInfo}">
+        <span th:text="${info}" />
+    </div>
 </body>
 </html>
