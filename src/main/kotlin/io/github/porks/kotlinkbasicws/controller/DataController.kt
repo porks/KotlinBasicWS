@@ -1,17 +1,17 @@
-package io.github.porks.kotlinkbasicws.controller.restapi
+package io.github.porks.kotlinkbasicws.controller
 
 import io.github.porks.kotlinkbasicws.model.table.DataTable
 import org.springframework.http.MediaType
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 @RequestMapping("/data")
 @RestController
 class DataController {
+    // Special row kind
+    private val _systemrow = "__systemrow"
+
     private val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
 
     private val _table = DataTable()
@@ -38,10 +38,17 @@ class DataController {
 
         val tableFiltered = DataTable()
         _table.rows.filter { row ->
-            row.values.filter { cell ->
-                val queryValues = normalizedQueryParams[cell.key]
-                queryValues?.any { it == cell.value.toUpperCase() } ?: false
-            }.isNotEmpty()
+            (
+                // Must match all params
+                (normalizedQueryParams.all { param ->
+                    // Match just one param's value is enough
+                    param.value.any { paramValue ->
+                        row.values[param.key]?.toUpperCase() == paramValue
+                    }
+                })
+                // We don't filter system's row
+                || (row.values[_systemrow] == "true")
+            )
         }.forEach {
             tableFiltered.addRow(it.values)
         }
@@ -65,8 +72,7 @@ class DataController {
         val accessTime = LocalDateTime.now()
         val accessTimeFormatted = accessTime.format(dateFormatter)
 
-
-        val accessTimeRow = hashMapOf("AccessTime" to accessTimeFormatted)
+        val accessTimeRow = hashMapOf("AccessTime" to accessTimeFormatted, _systemrow to "true")
         table.addRow(accessTimeRow)
     }
 
