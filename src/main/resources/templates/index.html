@@ -11,6 +11,8 @@
 
 <body>
     <div class="container-md">
+        <!-- Raw Table -->
+
         <div class="shadow p-3 mb-4 bg-body rounded">
             <div class="row alert alert-info">
                 <div class="col-md">
@@ -39,6 +41,8 @@
                 </div>
             </div>
         </div>
+
+        <!-- Filtered Table -->
 
         <div class="shadow p-3 mb-4 bg-body rounded">
             <div class="row alert alert-info">
@@ -73,17 +77,17 @@
                 </div>
             </div>
 
-            <form th:action="@{/}" th:object="${infoQuery}" method="post">
-                <div class="row">
-                    <div class="col-md">
+            <div class="row">
+                <div class="col-md">
+                    <form th:action="@{/}" th:object="${infoQuery}" method="post">
                         <div class="input-group mb-3">
                             <span class="input-group-text">Query String</span>
                             <input type="text" th:field="*{query}"  class="form-control" placeholder="the query string" aria-label="Recipient's username" aria-describedby="button-addon2">
                             <button class="btn btn-primary" type="submit" id="button-addon2">execute</button>
                         </div>
-                    </div>
+                    </form>
                 </div>
-            </form>
+            </div>
 
             <div class="row">
                 <div class="col-md">
@@ -105,7 +109,19 @@
                     </table>
                 </div>
             </div>
+
+
+            <div class="row">
+                <div class="col-md">
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addInfoTable">
+                        Add new row
+                    </button>
+                </div>
+            </div>
         </div>
+
+        <!-- Access Log -->
 
         <div class="shadow p-3 mb-4 bg-body rounded">
             <div class="row alert alert-info">
@@ -119,6 +135,34 @@
                 </div>
             </div>
         </div>
+
+        <!-- Add table information - Modal -->
+        <div class="modal fade" id="addInfoTable"
+             tabindex="-1" aria-labelledby="addInfoTableLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addInfoTableLabel">Modal title</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form th:action="@{/newData}" th:object="${infoQuery}" method="post">
+                        <div class="modal-body">
+                            <div class="input-group mb-3" th:each="field: ${tableView.columns}">
+                                <span class="input-group-text" th:text="${field}" />
+                                <input type="text" th:name="${field}"  class="form-control" placeholder="the query string" aria-label="Recipient's username" aria-describedby="button-addon2">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>
 </html>

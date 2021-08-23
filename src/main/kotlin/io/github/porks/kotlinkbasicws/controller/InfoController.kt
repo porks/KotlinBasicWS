@@ -54,4 +54,20 @@ class InfoController {
 
         return "index"
     }
+
+    // Index page with human-readable information
+    @PostMapping("/newData")
+    fun newData( //
+        model: Model, //
+        @RequestBody newData: String): String {
+        dataService.createAccessTimeRow()
+
+        println(URLDecoder.decode(newData, "UTF-8"))
+
+        model.addAttribute("tableView", TableView(dataService.table))
+        model.addAttribute("accessInfo", dataService.accessTable)
+        model.addAttribute("infoQuery", infoQuery)
+
+        return "index"
+    }
 }
