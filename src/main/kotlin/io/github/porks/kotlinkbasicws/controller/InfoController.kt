@@ -39,7 +39,7 @@ class InfoController {
     }
 
     // Index page with human-readable information
-    @PostMapping("/infoQueryExecute")
+    @PostMapping("/")
     fun infoQueryExecute( //
         model: Model, //
         @RequestBody newQueryString: String): String {
