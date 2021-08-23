@@ -11,79 +11,27 @@
 
 <body>
     <div class="container-md">
-        <!-- Raw Table -->
-
-        <div class="shadow p-3 mb-4 bg-body rounded">
-            <div class="row alert alert-info">
-                <div class="col-md">
-                    <h2>Table Information from Controller</h2>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md">
-                    <table class="table table-light table-hover">
-                        <thead>
-                            <tr>
-                                <td th:each="col: ${tableView.columns}">
-                                    <span th:text="${col}" />
-                                </td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr th:each="row: ${tableView.rows}">
-                                <td th:each="value: ${row}">
-                                    <span th:text="${value}" />
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
         <!-- Filtered Table -->
 
         <div class="shadow p-3 mb-4 bg-body rounded">
             <div class="row alert alert-info">
                 <div class="col-md">
-                    <h3>You can access this data using our WebService</h3>
-                </div>
-            </div>
-            <div class="row alert alert-light">
-                <div class="row">
-                    <div class="col-md">
-                        <span>All raw data is available </span>
-                        <span class="badge rounded-pill bg-light text-dark"><a href="/data/raw">here</a></span>
-                        <span>. The Endpoint is</span>
-                        <span class="badge bg-success">/data/raw</span>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md">
-                        <span>Or you can filter the data using the Endpoint </span>
-                        <span class="badge bg-success">/data/query?param=list,of,value</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row alert alert-info" role="alert">
-                <div class="col-md">
-                    Click
-                    <span class="badge rounded-pill bg-light text-dark">
-                        <a th:href="'/data/query?' + ${infoQuery.query}">here</a>
-                    </span>
-                     to see the table bellow in JSON format
+                    <h3>You can play with the table below - Do some query or add data</h3>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-md">
-                    <form th:action="@{/}" th:object="${infoQuery}" method="post">
+                    <form th:action="@{/infoQueryExecute}" th:object="${infoQuery}" method="post">
                         <div class="input-group mb-3">
                             <span class="input-group-text">Query String</span>
                             <input type="text" th:field="*{query}"  class="form-control" placeholder="the query string" aria-label="Recipient's username" aria-describedby="button-addon2">
-                            <button class="btn btn-primary" type="submit" id="button-addon2">execute</button>
+                            <button class="btn btn-primary" type="submit" id="button-addon2">Search</button>
+
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#addInfoTable">
+                                Add row
+                            </button>
                         </div>
                     </form>
                 </div>
@@ -109,14 +57,62 @@
                     </table>
                 </div>
             </div>
+        </div>
 
+        <!-- Raw Table -->
+
+        <div class="shadow p-3 mb-4 bg-body rounded">
+            <div class="row alert alert-info">
+                <div class="col-md">
+                    <h3>All table Information from Controller - No filter is applied in the following table</h3>
+                </div>
+            </div>
+
+            <div class="row alert alert-light">
+                <div class="row">
+                    <div class="col-md">
+                        <h5>You can access this data using our WebService.</h5>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md">
+                        <span>All raw data is available </span>
+                        <span class="badge rounded-pill bg-light text-dark"><a href="/data/raw">here</a></span>
+                        <span> under JSON format. The Endpoint is</span>
+                        <span class="badge bg-success">/data/raw</span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md">
+                        <span>The query is available </span>
+                        <span class="badge rounded-pill bg-light text-dark">
+                            <a th:href="'/data/query?' + ${infoQuery.query}">here</a>
+                        </span>
+                        <span> under JSON format. The Endpoint accepts query with this pattern </span>
+                        <span class="badge bg-success">/data/query?param=list,of,value</span>
+                    </div>
+                </div>
+            </div>
 
             <div class="row">
                 <div class="col-md">
-                    <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addInfoTable">
-                        Add new row
-                    </button>
+                    <table class="table table-light table-hover">
+                        <thead>
+                        <tr>
+                            <td th:each="col: ${tableView.columns}">
+                                <span th:text="${col}" />
+                            </td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="row: ${tableView.rows}">
+                            <td th:each="value: ${row}">
+                                <span th:text="${value}" />
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -145,11 +141,11 @@
                         <h5 class="modal-title" id="addInfoTableLabel">Modal title</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <form th:action="@{/newData}" th:object="${infoQuery}" method="post">
+                    <form th:action="@{/newData}" th:object="${newDataRow}" method="post">
                         <div class="modal-body">
                             <div class="input-group mb-3" th:each="field: ${tableView.columns}">
                                 <span class="input-group-text" th:text="${field}" />
-                                <input type="text" th:name="${field}"  class="form-control" placeholder="the query string" aria-label="Recipient's username" aria-describedby="button-addon2">
+                                <input type="text" th:field="*{values[__${field}__]}"  class="form-control" placeholder="the query string" aria-label="Recipient's username" aria-describedby="button-addon2">
                             </div>
                         </div>
                         <div class="modal-footer">

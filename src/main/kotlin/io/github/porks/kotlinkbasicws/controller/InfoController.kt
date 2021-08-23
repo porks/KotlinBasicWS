@@ -1,6 +1,7 @@
 package io.github.porks.kotlinkbasicws.controller
 
 import io.github.porks.kotlinkbasicws.model.InfoQuery
+import io.github.porks.kotlinkbasicws.model.NewDataRow
 import io.github.porks.kotlinkbasicws.service.DataService
 import io.github.porks.kotlinkbasicws.service.QueryTable
 import io.github.porks.kotlinkbasicws.service.TableView
@@ -8,9 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import java.net.URLDecoder
 
 /**
  * WebView Controller used by the index page
@@ -26,6 +26,8 @@ class InfoController {
 
     var infoQuery = InfoQuery("size=big,huge,middle&color=red,blue")
 
+    var newDataRow = NewDataRow()
+
     // Index page with human-readable information
     @GetMapping("/")
     fun index(model: Model): String {
@@ -34,40 +36,37 @@ class InfoController {
         model.addAttribute("tableView", TableView(dataService.table))
         model.addAttribute("accessInfo", dataService.accessTable)
         model.addAttribute("infoQuery", infoQuery)
+        model.addAttribute("newDataRow", newDataRow)
 
         return "index"
     }
 
     // Index page with human-readable information
-    @PostMapping("/")
+    @PostMapping("/infoQueryExecute")
     fun infoQueryExecute( //
         model: Model, //
-        @RequestBody newQueryString: String): String {
+        @ModelAttribute("customer") formInfoQuery: InfoQuery //
+    ): String {
         dataService.createAccessTimeRow()
 
         // Persist the newQueryString, if it is valid
-        infoQuery.query = queryTable.parseQuery(newQueryString)
+        infoQuery.query = queryTable.parseQuery(formInfoQuery.query)
 
-        model.addAttribute("tableView", TableView(dataService.table))
-        model.addAttribute("accessInfo", dataService.accessTable)
-        model.addAttribute("infoQuery", infoQuery)
-
-        return "index"
+        return "redirect:/"
     }
 
     // Index page with human-readable information
     @PostMapping("/newData")
     fun newData( //
         model: Model, //
-        @RequestBody newData: String): String {
+        @ModelAttribute("newDataRow") newDataRow: NewDataRow //
+    ): String {
         dataService.createAccessTimeRow()
 
-        println(URLDecoder.decode(newData, "UTF-8"))
+        // Check if there is any data and add the new row
+        if (newDataRow.values.isNotEmpty() && newDataRow.values.any { it.value.isNotEmpty() })
+            dataService.table.addRow(newDataRow.values)
 
-        model.addAttribute("tableView", TableView(dataService.table))
-        model.addAttribute("accessInfo", dataService.accessTable)
-        model.addAttribute("infoQuery", infoQuery)
-
-        return "index"
+        return "redirect:/"
     }
 }
