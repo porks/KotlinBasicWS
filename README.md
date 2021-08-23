@@ -1,6 +1,6 @@
 # KotlinBasicWS
 
-## Basic springboot usage.
+## Basic springboot usage
 
 A @RestController named DataController providing the data in JSON format.
 
